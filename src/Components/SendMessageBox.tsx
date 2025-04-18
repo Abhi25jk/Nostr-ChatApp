@@ -1,4 +1,4 @@
-//src/Components/SendMessageBox.tsx
+// @ts-ignore
 import React, { useState, useContext,useId } from "react";
 import { useRecipient } from "../contexts/RecipientContext";
 import { MessageContext } from "../contexts/MessageContext";

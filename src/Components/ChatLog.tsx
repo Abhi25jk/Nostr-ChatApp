@@ -1,4 +1,4 @@
-// // src/components/ChatLog.tsx
+// @ts-ignore
 import React, { useContext, useState } from "react";
 import { MessageContext } from "../contexts/MessageContext";
 import { useRecipient } from "../contexts/RecipientContext";
@@ -16,8 +16,8 @@ type Rumor = UnsignedEvent & { id: string };
 
 const TWO_DAYS = 2 * 24 * 60 * 60;
 
-const now = (): number => Math.round(Date.now() / 1000);
-const randomNow = (): number => Date.now();
+// const now = (): number => Math.round(Date.now() / 1000);
+// const randomNow = (): number => Date.now();
 
 // Derive conversation key from private and public key
 const nip44ConversationKey = (

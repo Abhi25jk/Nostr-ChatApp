@@ -1,3 +1,4 @@
+// @ts-ignore
 // src/Components/LoggedInLayout.tsx
 import React from "react";
 import { useState } from "react";
