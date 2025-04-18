@@ -3,8 +3,8 @@
 import React, { useContext, useState } from "react";
 import { MessageContext } from "../contexts/MessageContext";
 import { useRecipient } from "../contexts/RecipientContext";
-import { useContactList } from "../contexts/ContactListContext";
-import { nip19,nip44 } from "nostr-tools";
+// import { useContactList } from "../contexts/ContactListContext";
+import { nip44 } from "nostr-tools";
 import SendMessageBox from "./SendMessageBox";
 import { UnsignedEvent} from "nostr-tools/wasm";
 import { SimplePool, Filter, Event, kinds } from "nostr-tools";
@@ -73,27 +73,28 @@ interface Message {
 
 const ChatLog: React.FC = () => {
   const { messages,addMessage } = useContext(MessageContext);
-  const { recipientPubKey, setRecipientPubKey } = useRecipient();
-  const { contacts, addContact } = useContactList();
-  const [inputValue, setInputValue] = useState("");
+  const { recipientPubKey } = useRecipient();
+  // const { contacts, addContact } = useContactList();
+  // const [inputValue, setInputValue] = useState("");
   // const { pubkey: myPubkey } = useKeys();
-
+  // console.log(contacts);
+  // console.log(inputValue);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const handleInputChange = (input: string) => {
-    setInputValue(input);
-    if (!input.startsWith("npub") || input.length < 50) return;
+  // const handleInputChange = (input: string) => {
+  //   setInputValue(input);
+  //   if (!input.startsWith("npub") || input.length < 50) return;
 
-    try {
-      const { type, data } = nip19.decode(input);
-      if (type === "npub" && typeof data === "string") {
-        setRecipientPubKey(data);
-        addContact(data);
-      }
-    } catch (err) {
-      console.warn("Invalid npub key:", err);
-    }
-  };
+  //   try {
+  //     const { type, data } = nip19.decode(input);
+  //     if (type === "npub" && typeof data === "string") {
+  //       setRecipientPubKey(data);
+  //       addContact(data);
+  //     }
+  //   } catch (err) {
+  //     console.warn("Invalid npub key:", err);
+  //   }
+  // };
 
   const filteredMessages = messages.filter((message) => {
     const isSentToRecipient = message.tags?.some((tag) => tag[0] === "p" && tag[1] === recipientPubKey);
@@ -138,7 +139,8 @@ const ChatLog: React.FC = () => {
     const { privkey, pubkey } = useKeys();
     const [error, setError] = useState<string | null>(null);
     const [isSubscribed, setIsSubscribed] = useState(false);
-  
+    console.log(error);
+    console.log(isSubscribed);
     useEffect(() => {
       if (!privkey || !pubkey) {
         setError("Private key or public key missing");
