@@ -1,20 +1,21 @@
 // @ts-ignore
+// // src/components/ChatLog.tsx
 import React, { useContext, useState } from "react";
 import { MessageContext } from "../contexts/MessageContext";
 import { useRecipient } from "../contexts/RecipientContext";
 import { useContactList } from "../contexts/ContactListContext";
 import { nip19,nip44 } from "nostr-tools";
 import SendMessageBox from "./SendMessageBox";
-import { verifyEvent ,UnsignedEvent} from "nostr-tools/wasm";
+import { UnsignedEvent} from "nostr-tools/wasm";
 import { SimplePool, Filter, Event, kinds } from "nostr-tools";
-import { hexToBytes,bytesToHex } from "@noble/hashes/utils";
+import { hexToBytes } from "@noble/hashes/utils";
 import { useEffect, useRef } from "react";
 import { useKeys } from "../contexts/KeyContext"; // ⬅️ Needed for your privkey
 import { getPublicKey } from 'nostr-tools'
 
 type Rumor = UnsignedEvent & { id: string };
 
-const TWO_DAYS = 2 * 24 * 60 * 60;
+// const TWO_DAYS = 2 * 24 * 60 * 60;
 
 // const now = (): number => Math.round(Date.now() / 1000);
 // const randomNow = (): number => Date.now();
@@ -27,12 +28,12 @@ const nip44ConversationKey = (
   nip44.v2.utils.getConversationKey((privateKey), publicKey);
 
 // Encrypt an event using NIP-44
-const nip44Encrypt = (
-  data: Event,
-  privateKey: Uint8Array,
-  publicKey: string
-): string =>
-  nip44.v2.encrypt(JSON.stringify(data), nip44ConversationKey(privateKey, publicKey));
+// const nip44Encrypt = (
+//   data: Event,
+//   privateKey: Uint8Array,
+//   publicKey: string
+// ): string =>
+//   nip44.v2.encrypt(JSON.stringify(data), nip44ConversationKey(privateKey, publicKey));
 
 // Decrypt an event using NIP-44
 const nip44Decrypt = (
@@ -64,18 +65,18 @@ interface Message {
   tags: string[][];
 }
 
-interface UnwrappedMessage {
-content: string;
-senderPubkey: string;
-created_at: number;
-}
+// interface UnwrappedMessage {
+// content: string;
+// senderPubkey: string;
+// created_at: number;
+// }
 
 const ChatLog: React.FC = () => {
   const { messages,addMessage } = useContext(MessageContext);
   const { recipientPubKey, setRecipientPubKey } = useRecipient();
   const { contacts, addContact } = useContactList();
   const [inputValue, setInputValue] = useState("");
-  const { pubkey: myPubkey } = useKeys();
+  // const { pubkey: myPubkey } = useKeys();
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -107,18 +108,18 @@ const ChatLog: React.FC = () => {
     }
   }, [filteredMessages]);
 
-  const getIndianTime = (time: number) => {
-    const indianTime = new Date(time).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      hour12: true,
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return indianTime;
-  };
+  // const getIndianTime = (time: number) => {
+  //   const indianTime = new Date(time).toLocaleString("en-IN", {
+  //     timeZone: "Asia/Kolkata",
+  //     hour12: true,
+  //     year: "numeric",
+  //     month: "long",
+  //     day: "numeric",
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //   });
+  //   return indianTime;
+  // };
   const getIndianTimeFromUnix = (unixTimestamp: number): string => {
     const date = new Date(unixTimestamp * 1000); // convert to milliseconds
     return date.toLocaleString("en-IN", {
@@ -129,7 +130,7 @@ const ChatLog: React.FC = () => {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-      second: "2-digit",
+      // second: "2-digit",
     });
   };
 
@@ -161,12 +162,12 @@ const ChatLog: React.FC = () => {
             {
               onevent: async (giftWrapEvent: Event) => {
                 try {
-                  let recipientPubHex = recipientPubKey;
-                        if (recipientPubKey.startsWith('npub1')) {
-                          const decoded = nip19.decode(recipientPubKey);
-                          if (decoded.type !== 'npub') throw new Error('Invalid npub');
-                          recipientPubHex = bytesToHex(decoded.data as unknown as Uint8Array);
-                        }
+                  // let recipientPubHex = recipientPubKey;
+                  //       if (recipientPubKey.startsWith('npub1')) {
+                  //         const decoded = nip19.decode(recipientPubKey);
+                  //         if (decoded.type !== 'npub') throw new Error('Invalid npub');
+                  //         recipientPubHex = bytesToHex(decoded.data as unknown as Uint8Array);
+                  //       }
                   // console.log(giftWrapEvent);
                   // if (giftWrapEvent.pubkey != recipientPubHex ) {
                   //   console.log("Ignoring message from unknown sender", giftWrapEvent.pubkey);
@@ -176,7 +177,7 @@ const ChatLog: React.FC = () => {
                   if (!giftWrapEvent.content || !giftWrapEvent.pubkey) {
                     throw new Error("Invalid event structure");
                   }
-                  const senderPrivKeyBytes = hexToBytes(privkey);
+                  // const senderPrivKeyBytes = hexToBytes(privkey);
                   const recipientPrivateKey = hexToBytes(privkey); // this should be the recipient's actual private key
                   
                   let unwrappedSeal, unsealedRumor;

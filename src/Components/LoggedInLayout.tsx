@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRecipient } from "../contexts/RecipientContext";
 import { useContactList } from "../contexts/ContactListContext";
 import ChatLog from "./ChatLog";
-import Profile from "./Profile";
+// import Profile from "./Profile";
 import { nip19 } from "nostr-tools";
 
 interface Props {

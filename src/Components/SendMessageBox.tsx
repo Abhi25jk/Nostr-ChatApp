@@ -2,11 +2,11 @@
 import React, { useState, useContext,useId } from "react";
 import { useRecipient } from "../contexts/RecipientContext";
 import { MessageContext } from "../contexts/MessageContext";
-import { SimplePool, Event, nip44, nip19, generateSecretKey, serializeEvent, getEventHash, getPublicKey,type EventTemplate, type UnsignedEvent, } from "nostr-tools";
+import { SimplePool, Event, nip44, nip19, generateSecretKey, getEventHash, getPublicKey,type EventTemplate, type UnsignedEvent, } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { useKeys } from "../contexts/KeyContext";
 // import { minePowEvent } from "../utils/minePow";
-import { getConversationKey, encrypt } from "nostr-tools/nip44";
+// import { getConversationKey, encrypt } from "nostr-tools/nip44";
 import { finalizeEvent } from 'nostr-tools/pure';
 import Picker, { EmojiClickData } from "emoji-picker-react";
 
@@ -20,10 +20,10 @@ const relays = [
 
 type Rumor = UnsignedEvent & { id: string };
 
-const TWO_DAYS = 2 * 12;
+// const TWO_DAYS = 2 * 12;
 
 const now = (): number => Math.round(Date.now() / 1000);
-const randomNow = (): number => Math.round(now() - Math.random() * TWO_DAYS);
+// const randomNow = (): number => Math.round(now() - Math.random() * TWO_DAYS);
 
 // Derive conversation key from private and public key
 const nip44ConversationKey = (
@@ -41,16 +41,16 @@ const nip44Encrypt = (
   nip44.v2.encrypt(JSON.stringify(data), nip44ConversationKey(privateKey, publicKey));
 
 // Decrypt an event using NIP-44
-const nip44Decrypt = (
-  data: Event,
-  privateKey: Uint8Array
-): any => {
-  const decrypted = nip44.v2.decrypt(
-    data.content,
-    nip44ConversationKey(privateKey, data.pubkey)
-  );
-  return JSON.parse(decrypted);
-};
+// const nip44Decrypt = (
+//   data: Event,
+//   privateKey: Uint8Array
+// ): any => {
+//   const decrypted = nip44.v2.decrypt(
+//     data.content,
+//     nip44ConversationKey(privateKey, data.pubkey)
+//   );
+//   return JSON.parse(decrypted);
+// };
 
 // Create a base Nostr event (Rumor)
 const createRumor = (
@@ -127,7 +127,7 @@ const senderPrivBytes = hexToBytes(senderPriv);
 
 
 const SendMessageBox: React.FC = () => {
-  const { privkey, pubkey, setPrivkeyFromNsec } = useKeys();
+  const { privkey} = useKeys();
   const [message, setMessage] = useState("");
   const { recipientPubKey } = useRecipient();
   const { addMessage } = useContext(MessageContext);
@@ -156,19 +156,19 @@ const SendMessageBox: React.FC = () => {
       );
       // const eventWithPow = await finalizeEvent(unsignedEvent, privkey, { difficulty: 28 });
       const ID = getEventHash(fullEvent);
-      const getIndianTime = () => {
-        const indianTime = new Date().toLocaleString("en-IN", {
-          timeZone: "Asia/Kolkata",
-          hour12: true,
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-        return indianTime;
-      };
+      // const getIndianTime = () => {
+      //   const indianTime = new Date().toLocaleString("en-IN", {
+      //     timeZone: "Asia/Kolkata",
+      //     hour12: true,
+      //     year: "numeric",
+      //     month: "long",
+      //     day: "numeric",
+      //     hour: "2-digit",
+      //     minute: "2-digit",
+      //     second: "2-digit",
+      //   });
+      //   return indianTime;
+      // };
 
       const Event = {
         id: ID ,
@@ -180,7 +180,8 @@ const SendMessageBox: React.FC = () => {
       console.log("Event:", );
       addMessage(Event);
       const pool = new SimplePool();
-      const pubs = pool.publish(relays, fullEvent);
+      // const pubs = 
+      pool.publish(relays, fullEvent);
       setMessage("");
     } catch (err) {
       console.error("Error sending message:", err);

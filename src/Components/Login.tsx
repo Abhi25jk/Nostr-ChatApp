@@ -12,7 +12,7 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const { privkey, pubkey, setPrivkeyFromNsec,setUsernameFromLogin } = useKeys();
+  const {  setPrivkeyFromNsec,setUsernameFromLogin } = useKeys();
   const [privateKey, setPrivateKey] = useState("");
 
 
