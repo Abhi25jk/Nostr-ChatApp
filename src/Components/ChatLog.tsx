@@ -3,22 +3,16 @@
 import React, { useContext, useState } from "react";
 import { MessageContext } from "../contexts/MessageContext";
 import { useRecipient } from "../contexts/RecipientContext";
-// import { useContactList } from "../contexts/ContactListContext";
-import { nip44 } from "nostr-tools";
+import { nip19,nip44 } from "nostr-tools";
 import SendMessageBox from "./SendMessageBox";
 import { UnsignedEvent} from "nostr-tools/wasm";
 import { SimplePool, Filter, Event, kinds } from "nostr-tools";
 import { hexToBytes } from "@noble/hashes/utils";
 import { useEffect, useRef } from "react";
-import { useKeys } from "../contexts/KeyContext"; // ⬅️ Needed for your privkey
+import { useKeys } from "../contexts/KeyContext"; 
 import { getPublicKey } from 'nostr-tools'
 
 type Rumor = UnsignedEvent & { id: string };
-
-// const TWO_DAYS = 2 * 24 * 60 * 60;
-
-// const now = (): number => Math.round(Date.now() / 1000);
-// const randomNow = (): number => Date.now();
 
 // Derive conversation key from private and public key
 const nip44ConversationKey = (
@@ -26,14 +20,6 @@ const nip44ConversationKey = (
   publicKey: string
 ): Uint8Array =>
   nip44.v2.utils.getConversationKey((privateKey), publicKey);
-
-// Encrypt an event using NIP-44
-// const nip44Encrypt = (
-//   data: Event,
-//   privateKey: Uint8Array,
-//   publicKey: string
-// ): string =>
-//   nip44.v2.encrypt(JSON.stringify(data), nip44ConversationKey(privateKey, publicKey));
 
 // Decrypt an event using NIP-44
 const nip44Decrypt = (
@@ -65,36 +51,10 @@ interface Message {
   tags: string[][];
 }
 
-// interface UnwrappedMessage {
-// content: string;
-// senderPubkey: string;
-// created_at: number;
-// }
-
 const ChatLog: React.FC = () => {
   const { messages,addMessage } = useContext(MessageContext);
   const { recipientPubKey } = useRecipient();
-  // const { contacts, addContact } = useContactList();
-  // const [inputValue, setInputValue] = useState("");
-  // const { pubkey: myPubkey } = useKeys();
-  // console.log(contacts);
-  // console.log(inputValue);
   const chatEndRef = useRef<HTMLDivElement>(null);
-
-  // const handleInputChange = (input: string) => {
-  //   setInputValue(input);
-  //   if (!input.startsWith("npub") || input.length < 50) return;
-
-  //   try {
-  //     const { type, data } = nip19.decode(input);
-  //     if (type === "npub" && typeof data === "string") {
-  //       setRecipientPubKey(data);
-  //       addContact(data);
-  //     }
-  //   } catch (err) {
-  //     console.warn("Invalid npub key:", err);
-  //   }
-  // };
 
   const filteredMessages = messages.filter((message) => {
     const isSentToRecipient = message.tags?.some((tag) => tag[0] === "p" && tag[1] === recipientPubKey);
@@ -109,18 +69,6 @@ const ChatLog: React.FC = () => {
     }
   }, [filteredMessages]);
 
-  // const getIndianTime = (time: number) => {
-  //   const indianTime = new Date(time).toLocaleString("en-IN", {
-  //     timeZone: "Asia/Kolkata",
-  //     hour12: true,
-  //     year: "numeric",
-  //     month: "long",
-  //     day: "numeric",
-  //     hour: "2-digit",
-  //     minute: "2-digit",
-  //   });
-  //   return indianTime;
-  // };
   const getIndianTimeFromUnix = (unixTimestamp: number): string => {
     const date = new Date(unixTimestamp * 1000); // convert to milliseconds
     return date.toLocaleString("en-IN", {
@@ -202,7 +150,7 @@ const ChatLog: React.FC = () => {
                   
                   const message: Message = {
                     id: localId,
-                    pubkey: giftWrapEvent.pubkey,
+                    pubkey: recipientPubKey,//giftWrapEvent.pubkey,
                     content: decryptedContent.content, 
                     created_at: (giftWrapEvent.created_at),
                     isIncoming: true,
@@ -266,78 +214,25 @@ const ChatLog: React.FC = () => {
       // </div>
     );
   }
+  //
   else{
     return (
-      // <div className="p-4 h-full flex flex-col">
-      //   {/* Message Log */}
-      //   <div className="overflow-y-auto flex-1 mb-4">
-      //     {sortedMessages.length === 0 ? (
-      //       <div className="text-gray-500 text-center">No messages yet.</div>
-      //     ) : (
-      //       sortedMessages.map((message) => {
-      //         const isSent = !message.isIncoming;
-  
-      //         return (
-      //           <div
-      //             key={message.id}
-      //             className={`mb-2 p-2 max-w-[500px] rounded shadow ${
-      //               isSent
-      //                 ? "ml-auto bg-blue-100 text-right"
-      //                 : "mr-auto bg-gray-100 text-left"
-      //             }`}
-      //           >
-      //             {/* Label */}
-      //             <div
-      //               className={`text-xs font-semibold ${
-      //                 isSent ? "text-blue-600" : "text-gray-600"
-      //               }`}
-      //             >
-      //               {isSent ? "You" : "From"}
-      //             </div>
-  
-      //             {/* Pubkey */}
-  
-      //             {!isSent && (<div className="text-xs text-gray-600 break-all">
-      //               {message.pubkey}
-      //             </div>)}
-                  
-                  
-  
-      //             {/* Content */}
-      //             <div className="text-base break-words">{message.content}</div>
-  
-      //             {/* Timestamp */}
-      //             <div className="text-xs text-gray-400">
-      //               {getIndianTime(message.created_at)}
-      //             </div>
-      //           </div>
-      //         );
-      //       })
-      //     )}
-      //     {/* Reference for scrolling */}
-      //     <div ref={chatEndRef}></div>
-      //   </div>
-  
-      //   {/* Send box */}
-      //   {recipientPubKey && <SendMessageBox />}
-      // </div>
-      
-<div className="p-2 h-screen flex flex-col">
-  {/* Message Log */}
-  <div className="overflow-y-auto flex-1 mb-2 max-h-[calc(100vh-120px)]"> {/* Limited height */}
-    {sortedMessages.length === 0 ? (
-      <div className="text-gray-500 text-center">No messages yet.</div>
-    ) : (
-      sortedMessages.map((message) => {
-        const isSent = !message.isIncoming;
+    <div className="p-2 h-screen flex flex-col">
+      {/* Message Log */}
+      <div className="overflow-y-auto flex-1 mb-2 "> {/* Limited height */}
+       {sortedMessages.length === 0 ? (
+        <div className="text-gray-500 text-center">No messages yet.</div>
+         ) : (
+        sortedMessages.map((message) => {
+         const isSent = !message.isIncoming;
 
-        return (
+         return (
           <div
             key={message.id}
             className={`mb-2 p-2 max-w-[500px] rounded shadow ${
               isSent ? "ml-auto bg-blue-100 text-right" : "mr-auto bg-gray-100 text-left"
             }`}
-          >
+           >
             {/* Label */}
             <div
               className={`text-xs font-semibold ${
@@ -350,7 +245,7 @@ const ChatLog: React.FC = () => {
             {/* Pubkey */}
             {!isSent && (
               <div className="text-xs text-gray-600 break-all">
-                {message.pubkey}
+                {nip19.npubEncode(message.pubkey)}
               </div>
             )}
 
@@ -362,21 +257,22 @@ const ChatLog: React.FC = () => {
               {getIndianTimeFromUnix(message.created_at)}
             </div>
           </div>
-        );
-      })
-    )}
-    {/* Reference for scrolling */}
-    <div ref={chatEndRef}></div>
-  </div>
+          );
+         })
+       )}
+       {/* Reference for scrolling */}
+       <div ref={chatEndRef}></div>
+     </div>
 
-  {/* Send box - Sticky at bottom */}
-  {recipientPubKey && (
-    <div className="sticky bottom-0 rounded-full bg-gray-800 p-2">
-      <SendMessageBox />
-    </div>
-  )}
-</div>
+      {/* Send box - Sticky at bottom */}
+      {recipientPubKey && (
+      <div className="sticky bottom-4 rounded-full bg-gray-800 p-2">
+        <SendMessageBox />
+      </div>
+    )}
+      </div>
     );
+    
   }
   
 };

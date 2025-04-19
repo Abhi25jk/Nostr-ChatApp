@@ -35,23 +35,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }
   };
 
-  return (
-  //   <div className="flex justify-center items-center h-screen w-screen bg-gray-100 dark:bg-gray-500">
-  //   <div className="w-[600px] h-[300px] p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-400">
-  //     <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-  //     <input className="border w-137 border-gray-900 rounded px-3 py-2 margin-bottom-30"
-  //       value={privateKey}
-  //       onChange={(e) => setPrivateKey(e.target.value)}
-  //       placeholder="Paste your private key (nsec...)"
-  //     />
-  //     <div className = "flex justify-center mt-4">
-  //     <button onClick={handleLogin} className="w-1/4 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors mx-auto">
-  //       Login
-  //     </button>
-  //     </div>
-  //   </div>
-  // </div>
-  
+  return (  
   <div className="flex justify-center items-center h-screen w-screen bg-gray-100 dark:bg-gray-500">
   <div className="w-[600px] h-[350px] p-6 border rounded-2xl shadow-lg bg-green-300 dark:bg-green-300">
     <h2 className="text-3xl font-bold mb-6 mt-4 text-center">Login</h2>
