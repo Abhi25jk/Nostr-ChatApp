@@ -15,7 +15,6 @@ const LoggedInLayout: React.FC<Props> = () => {
   const { recipientPubKey, setRecipientPubKey } = useRecipient();
   const [inputValue, setInputValue] = useState("");
   const { contacts, addContact } = useContactList();
-
   const [sidebarWidth, setSidebarWidth] = useState(300); // initial sidebar width
   const isResizing = useRef(false);
 
@@ -55,7 +54,7 @@ const LoggedInLayout: React.FC<Props> = () => {
   };
 
   return (
-    <div className="flex max-h-[calc(100vh-60px)] overflow-hidden">
+    <div className="flex h-[100vh] overflow-hidden">
       {/* Sidebar */}
       <div
         style={{ width: sidebarWidth }}
@@ -70,7 +69,7 @@ const LoggedInLayout: React.FC<Props> = () => {
         <div className="mb-4 text-white">
           <input
             type="text"
-            value={inputValue}
+            value={inputValue} 
             onChange={(e) => handleInputChange(e.target.value)}
             placeholder="Enter recipient npub key"
             className="w-full px-3 py-2 border rounded shadow"

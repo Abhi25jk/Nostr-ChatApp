@@ -14,9 +14,9 @@ const Profile: React.FC<ProfileProps> = ({ onLogout }) => {
   const handleCopy = () => {
     navigator.clipboard.writeText(npub);
   };
-
+  
   return (
-    <div className="flex items-center justify-between p-4 bg-green-500 text-black shadow-md">
+    <div className="flex items-center justify-between p-4 bg-green-500 text-black shadow-md" id ="profile">
       {/* Left: App Name */}
       <div className="text-2xl font-bold">ChatApp</div>
 

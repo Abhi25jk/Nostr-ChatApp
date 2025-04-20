@@ -266,7 +266,7 @@ const ChatLog: React.FC = () => {
 
       {/* Send box - Sticky at bottom */}
       {recipientPubKey && (
-      <div className="sticky bottom-4 rounded-full bg-gray-800 p-2">
+      <div className="sticky bottom-4 mb-15 rounded-full bg-gray-800 p-2">
         <SendMessageBox />
       </div>
     )}
