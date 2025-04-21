@@ -5,8 +5,6 @@ import { MessageContext } from "../contexts/MessageContext";
 import { SimplePool, Event, nip44, nip19, generateSecretKey, getEventHash, getPublicKey,type EventTemplate, type UnsignedEvent, } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { useKeys } from "../contexts/KeyContext";
-// import { minePowEvent } from "../utils/minePow";
-// import { getConversationKey, encrypt } from "nostr-tools/nip44";
 import { finalizeEvent } from 'nostr-tools/pure';
 import Picker, { EmojiClickData } from "emoji-picker-react";
 
@@ -39,18 +37,6 @@ const nip44Encrypt = (
   publicKey: string
 ): string =>
   nip44.v2.encrypt(JSON.stringify(data), nip44ConversationKey(privateKey, publicKey));
-
-// Decrypt an event using NIP-44
-// const nip44Decrypt = (
-//   data: Event,
-//   privateKey: Uint8Array
-// ): any => {
-//   const decrypted = nip44.v2.decrypt(
-//     data.content,
-//     nip44ConversationKey(privateKey, data.pubkey)
-//   );
-//   return JSON.parse(decrypted);
-// };
 
 // Create a base Nostr event (Rumor)
 const createRumor = (
@@ -156,19 +142,7 @@ const SendMessageBox: React.FC = () => {
       );
       // const eventWithPow = await finalizeEvent(unsignedEvent, privkey, { difficulty: 28 });
       const ID = getEventHash(fullEvent);
-      // const getIndianTime = () => {
-      //   const indianTime = new Date().toLocaleString("en-IN", {
-      //     timeZone: "Asia/Kolkata",
-      //     hour12: true,
-      //     year: "numeric",
-      //     month: "long",
-      //     day: "numeric",
-      //     hour: "2-digit",
-      //     minute: "2-digit",
-      //     second: "2-digit",
-      //   });
-      //   return indianTime;
-      // };
+    
 
       const Event = {
         id: ID ,
@@ -188,23 +162,6 @@ const SendMessageBox: React.FC = () => {
     }
   };
 
-  // return (
-    // <div className="mt-4 pt-4">
-    //   <textarea
-    //     value={message}
-    //     onChange={(e) => setMessage(e.target.value)}
-    //     rows={2}
-    //     placeholder="Type your message..."
-    //     className="w-full p-2 border rounded mb-2 text-white"
-    //   />
-    //   <button
-    //     onClick={handleSend}
-    //     className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-900"
-    //   >
-    //     Send
-    //   </button>
-    // </div>
-  // );
   return (
     <div className="rounded-full relative">
       {/* Emoji Picker */}

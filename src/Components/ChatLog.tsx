@@ -1,5 +1,5 @@
 // @ts-ignore
-// // src/components/ChatLog.tsx
+// src/components/ChatLog.tsx
 import React, { useContext, useState } from "react";
 import { MessageContext } from "../contexts/MessageContext";
 import { useRecipient } from "../contexts/RecipientContext";
@@ -39,7 +39,6 @@ const relays = [
   // "wss://relay.snort.social",
   // "wss://relay.nostr.band",
   // "wss://purplepag.es",
-
 ];
 
 interface Message {
@@ -70,7 +69,7 @@ const ChatLog: React.FC = () => {
   }, [filteredMessages]);
 
   const getIndianTimeFromUnix = (unixTimestamp: number): string => {
-    const date = new Date(unixTimestamp * 1000); // convert to milliseconds
+    const date = new Date(unixTimestamp * 1000); 
     return date.toLocaleString("en-IN", {
       timeZone: "Asia/Kolkata",
       hour12: true,
@@ -112,23 +111,11 @@ const ChatLog: React.FC = () => {
             {
               onevent: async (giftWrapEvent: Event) => {
                 try {
-                  // let recipientPubHex = recipientPubKey;
-                  //       if (recipientPubKey.startsWith('npub1')) {
-                  //         const decoded = nip19.decode(recipientPubKey);
-                  //         if (decoded.type !== 'npub') throw new Error('Invalid npub');
-                  //         recipientPubHex = bytesToHex(decoded.data as unknown as Uint8Array);
-                  //       }
-                  // console.log(giftWrapEvent);
-                  // if (giftWrapEvent.pubkey != recipientPubHex ) {
-                  //   console.log("Ignoring message from unknown sender", giftWrapEvent.pubkey);
-                  //   return;
-                  // }
                   console.log("Received gift-wrap event:", giftWrapEvent);
                   if (!giftWrapEvent.content || !giftWrapEvent.pubkey) {
                     throw new Error("Invalid event structure");
                   }
-                  // const senderPrivKeyBytes = hexToBytes(privkey);
-                  const recipientPrivateKey = hexToBytes(privkey); // this should be the recipient's actual private key
+                  const recipientPrivateKey = hexToBytes(privkey); 
                   
                   let unwrappedSeal, unsealedRumor;
                   try {
@@ -145,8 +132,8 @@ const ChatLog: React.FC = () => {
                     return;
                   }
 
-                  const decryptedContent = unsealedRumor; //await unwrapGiftWrap(giftWrapEvent, privkey);
-                  const localId = unsealedRumor.id ;//|| giftWrapEvent.id || crypto.randomUUID();
+                  const decryptedContent = unsealedRumor; 
+                  const localId = unsealedRumor.id ;
                   
                   const message: Message = {
                     id: localId,
@@ -162,9 +149,6 @@ const ChatLog: React.FC = () => {
                   if (chatEndRef.current) {
                     chatEndRef.current.scrollIntoView({ behavior: "smooth" });
                   }
-                  // setRecipientPubKey(giftWrapEvent.pubkey);
-                  // setRecipientPubKey(giftWrapEvent.pubkey);
-                  // addContact(giftWrapEvent.pubkey);
                 } catch (err) {
                     console.error("unwrapGiftWrap failed:", err);
                     console.log("GiftWrap event:", giftWrapEvent);
@@ -193,7 +177,6 @@ const ChatLog: React.FC = () => {
           return () => {
             sub.close();
             pool.close(relays);
-            // console.log("Subscription and pool closed");
             setIsSubscribed(false);
           };
         } catch (err) {
@@ -207,69 +190,120 @@ const ChatLog: React.FC = () => {
 
   if(recipientPubKey === "") {
     return(
-      // <div>
         <div className="h-full w-full flex items-center justify-center">
           <div className="text-gray-800 text-center">Select a contact to start chatting.</div>
         </div>
-      // </div>
     );
   }
   //
   else{
+    // return (
+    // <div className="p-2 h-screen flex flex-col">
+    //   {/* Message Log */}
+    //   <div className="overflow-y-auto flex-1 mb-2 "> {/* Limited height */}
+    //    {sortedMessages.length === 0 ? (
+    //     <div className="text-gray-500 text-center">No messages yet.</div>
+    //      ) : (
+    //     sortedMessages.map((message) => {
+    //      const isSent = !message.isIncoming;
+
+    //      return (
+    //       <div
+    //         key={message.id}
+    //         className={`mb-2 p-2 max-w-[500px] rounded shadow ${
+    //           isSent ? "ml-auto bg-blue-100 text-right" : "mr-auto bg-gray-100 text-left"
+    //         }`}
+    //        >
+    //         {/* Label */}
+    //         <div
+    //           className={`text-xs font-semibold ${
+    //             isSent ? "text-blue-600" : "text-gray-600"
+    //           }`}
+    //         >
+    //           {isSent ? "You" : "From"}
+    //         </div>
+
+    //         {/* Pubkey */}
+    //         {!isSent && (
+    //           <div className="text-xs text-gray-600 break-all">
+    //             {nip19.npubEncode(message.pubkey)}
+    //           </div>
+    //         )}
+
+    //         {/* Content */}
+    //         <div className="text-base break-words">{message.content}</div>
+
+    //         {/* Timestamp */}
+    //         <div className="text-xs text-gray-400">
+    //           {getIndianTimeFromUnix(message.created_at)}
+    //         </div>
+    //       </div>
+    //       );
+    //      })
+    //    )}
+    //    {/* Reference for scrolling */}
+    //    <div ref={chatEndRef}></div>
+    //  </div>
+
+    //   {/* Send box - Sticky at bottom */}
+    //   {recipientPubKey && (
+    //   <div className="sticky bottom-4 mb-15 rounded-full bg-gray-800 p-2">
+    //     <SendMessageBox />
+    //   </div>
+    // )}
+    //   </div>
+    // );
     return (
-    <div className="p-2 h-screen flex flex-col">
-      {/* Message Log */}
-      <div className="overflow-y-auto flex-1 mb-2 "> {/* Limited height */}
-       {sortedMessages.length === 0 ? (
-        <div className="text-gray-500 text-center">No messages yet.</div>
-         ) : (
-        sortedMessages.map((message) => {
-         const isSent = !message.isIncoming;
-
-         return (
-          <div
-            key={message.id}
-            className={`mb-2 p-2 max-w-[500px] rounded shadow ${
-              isSent ? "ml-auto bg-blue-100 text-right" : "mr-auto bg-gray-100 text-left"
-            }`}
-           >
-            {/* Label */}
-            <div
-              className={`text-xs font-semibold ${
-                isSent ? "text-blue-600" : "text-gray-600"
-              }`}
-            >
-              {isSent ? "You" : "From"}
-            </div>
-
-            {/* Pubkey */}
-            {!isSent && (
-              <div className="text-xs text-gray-600 break-all">
-                {nip19.npubEncode(message.pubkey)}
-              </div>
-            )}
-
-            {/* Content */}
-            <div className="text-base break-words">{message.content}</div>
-
-            {/* Timestamp */}
-            <div className="text-xs text-gray-400">
-              {getIndianTimeFromUnix(message.created_at)}
-            </div>
+      <div className="p-2 h-screen flex flex-col bg-white text-black dark:bg-gray-900 dark:text-white">
+        {/* Message Log */}
+        <div className="overflow-y-auto flex-1 mb-2">
+          {sortedMessages.length === 0 ? (
+            <div className="text-gray-500 dark:text-gray-400 text-center">No messages yet.</div>
+          ) : (
+            sortedMessages.map((message) => {
+              const isSent = !message.isIncoming;
+    
+              return (
+                <div
+                  key={message.id}
+                  className={`mb-2 p-2 max-w-[500px] rounded shadow ${
+                    isSent
+                      ? "ml-auto bg-blue-100 text-right dark:bg-blue-800 dark:text-white"
+                      : "mr-auto bg-gray-100 text-left dark:bg-gray-800 dark:text-white"
+                  }`}
+                >
+                  <div
+                    className={`text-xs font-semibold ${
+                      isSent ? "text-blue-600 dark:text-blue-300" : "text-gray-600 dark:text-gray-300"
+                    }`}
+                  >
+                    {isSent ? "You" : "From"}
+                  </div>
+    
+                  {!isSent && (
+                    <div className="text-xs text-gray-600 dark:text-gray-400 break-all">
+                      {nip19.npubEncode(message.pubkey)}
+                    </div>
+                  )}
+    
+                  <div className="text-base break-words">{message.content}</div>
+    
+                  <div className="text-xs text-gray-400 dark:text-gray-500">
+                    {getIndianTimeFromUnix(message.created_at)}
+                  </div>
+                </div>
+              );
+            })
+          )}
+          <div ref={chatEndRef}></div>
+        </div>
+    
+        {/* Send box */}
+        {recipientPubKey && (
+          <div className="sticky bottom-4 mb-15 rounded-full bg-gray-800 dark:bg-gray-700 p-2">
+            <SendMessageBox />
           </div>
-          );
-         })
-       )}
-       {/* Reference for scrolling */}
-       <div ref={chatEndRef}></div>
-     </div>
-
-      {/* Send box - Sticky at bottom */}
-      {recipientPubKey && (
-      <div className="sticky bottom-4 mb-15 rounded-full bg-gray-800 p-2">
-        <SendMessageBox />
-      </div>
-    )}
+        )}
       </div>
     );
     

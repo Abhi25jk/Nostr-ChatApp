@@ -1,7 +1,6 @@
 // @ts-ignore
-// // src/components/ChatLog.tsx
+// src/components/ChatLog.tsx
 import React, { useState } from "react";
-// import { Button, Input } from "@heroui/react";
 import { getPublicKey } from "@noble/secp256k1";
 import { nip19 } from "nostr-tools";
 import { bytesToHex } from "@noble/hashes/utils";
@@ -36,8 +35,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (  
-  <div className="flex justify-center items-center h-screen w-screen bg-gray-100 dark:bg-gray-500">
-  <div className="w-[600px] h-[350px] p-6 border rounded-2xl shadow-lg bg-green-300 dark:bg-green-300">
+  <div className="flex justify-center items-center h-screen w-screen bg-gray-500">
+  <div className="w-[600px] h-[350px] p-6 border rounded-2xl shadow-lg bg-green-300">
     <h2 className="text-3xl font-bold mb-6 mt-4 text-center">Login</h2>
     <input
       className="border w-137 border-gray-900 rounded px-3 py-2 margin-bottom-30 mt-4 bg-white "
